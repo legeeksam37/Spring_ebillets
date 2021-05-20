@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Reservation</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<form th:action="@{/logout}" method="post">
+						<input type="submit" value="Logout" />
+					</form>
+					<h2 class="heading-section">Bonjour</h2><b><span sec:authentication="name">Username</span></b> &nbsp;
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12">
+					<h4 class="text-center mb-4">Recherchez un évenement</h4>
+					
+					
+					<!-- Espace user -->
+					
+					
+					
+					<!-- Espace Admin -->
+					<div sec:authorize="hasAnyAuthority('USER')">
+						<div class="table-wrap">
+							
+							<!-- Barre de recherche -->
+							
+							<br/><br/>
+							<form th:action="@{/}">
+								Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+								&nbsp;
+								<input type="submit" value="Rechercher" />
+								&nbsp;
+								<input type="button" value="Nettoyer" id="btnClear" onclick="clearSearch()" />
+							</form>
+							<br/><br/>
+							
+							<!-- barre de recherche -->
+							
+							
+							<table class="table">
+								<thead class="thead-primary">
+									<tr>
+										<th>type</th>
+										<th>titre</th>
+										<th>date</th>
+										<th>lieux</th>
+										<th>tarif</th>
+										<th>nombre de places</th>
+										<th>Actions</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="evenement : ${listE}">
+										<td th:text="${evenement.type}">type</td>
+										<td th:text="${evenement.titre}">titre</td>
+										<td th:text="${evenement.date}">date</td>
+										<td th:text="${evenement.localisation}">lieux</td>
+										<td th:text="${evenement.tarif}">tarif</td>
+										<td th:text="${evenement.nbPlaces}">nombre de places</td>	 
+											<td>								
+												<a th:href="@{/addreservation/{id} (id=${evenement.id})}"   th:object="${reservation}"> Réserver </a>		
+											</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- focntion de nettoyage -->
+						<script type="text/javascript">
+							function clearSearch() {
+								window.location = "[[@{/}]]";
+							}
+						</script>
+					</div>
+				</div>
+					
+					
+					
+					<!-- Espace Admin -->
+					<div sec:authorize="hasAnyAuthority('ADMIN')">
+						<a href="/new">Ajouter un évenement</a>
+						<div class="table-wrap">
+							
+							<!-- Barre de recherche -->
+							
+							<br/><br/>
+							<form th:action="@{/}">
+								Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+								&nbsp;
+								<input type="submit" value="Rechercher" />
+								&nbsp;
+								<input type="button" value="Nettoyer" id="btnClear" onclick="clearSearch()" />
+							</form>
+							<br/><br/>
+							
+							<!-- barre de recherche -->
+							
+							
+							<table class="table">
+								<thead class="thead-primary">
+									<tr>
+										<th>type</th>
+										<th>titre</th>
+										<th>date</th>
+										<th>lieux</th>
+										<th>tarif</th>
+										<th>nombre de places</th>
+										<th>Actions</th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="evenement : ${listE}">
+										<td th:text="${evenement.type}">type</td>
+										<td th:text="${evenement.titre}">titre</td>
+										<td th:text="${evenement.date}">date</td>
+										<td th:text="${evenement.localisation}">lieux</td>
+										<td th:text="${evenement.tarif}">tarif</td>
+										<td th:text="${evenement.nbPlaces}">nombre de places</td>	 
+											<td>						
+												<a th:href="@{'/edit/' + ${evenement.id}}">Modifier</a>						
+												<a th:href="@{'/delete/' + ${evenement.id}}">Supprimer</a>						
+											</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- focntion de nettoyage -->
+						<script type="text/javascript">
+							function clearSearch() {
+								window.location = "[[@{/}]]";
+							}
+						</script>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+	</html>
